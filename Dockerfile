@@ -13,8 +13,9 @@ FROM php:8.2-apache-bookworm
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git unzip libicu-dev libzip-dev libpng-dev \
+    git unzip libicu-dev libzip-dev libonig-dev libpng-dev \
     libjpeg62-turbo-dev libfreetype6-dev \
     wkhtmltopdf fonts-dejavu-core \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -26,6 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && sed -ri 's/AllowOverride None/AllowOverride All/g' \
        /etc/apache2/apache2.conf \
     && rm -rf /var/lib/apt/lists/*
+
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
